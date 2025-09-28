@@ -1,13 +1,21 @@
-# xo_game
-
-A new Flutter project.
+XO Game 🎮
+A simple and fun Tic-Tac-Toe game built with Flutter.
+This project combines clean UI, smooth navigation, and solid game logic to deliver a polished gaming experience.
 
 ## Getting Started
+✨ Features
+🎯 Choose who starts → X or O from the start screen
+🎨 Stylish UI with a custom background and responsive design
+⏱️ Real-time timer to track the duration of each match
+🏆 Winner detection with a popup to celebrate the winner
+🔄 Auto reset to start a new game instantly
+📱 Fully responsive layout
 
-This project is a starting point for a Flutter application.
+🚀 Tech Stack
+Flutter – UI development
+Dart – Core logic
 
-A few resources to get you started if this is your first Flutter project:
-
+Custom Widgets – For modular and reusable code
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
