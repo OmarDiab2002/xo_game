@@ -267,6 +267,8 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
     winner = "";
     counter = 0;
+    seconds = 0;
+    minutes = 0;
     setState(() {});
   }
 
