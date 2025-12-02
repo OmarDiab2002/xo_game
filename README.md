@@ -15,10 +15,10 @@ This project combines clean UI, smooth navigation, and solid game logic to deliv
 Flutter – UI development
 Dart – Core logic
 
-Custom Widgets – For modular and reusable code
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+---
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 📸 Screenshots
+
+| Home Screen | Play Screen |
+|---------------|----------------|
+| ![Home](assets/screenshots/home.png) | ![Play](assets/screenshots/play.png) |
