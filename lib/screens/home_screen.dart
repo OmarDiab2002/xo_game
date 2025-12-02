@@ -1,10 +1,8 @@
-import 'dart:ffi';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:xo_game/core/app_colors.dart';
 import 'package:xo_game/widgets/background_widget.dart';
 import 'package:xo_game/widgets/tab_widget.dart';
-import 'dart:async';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = "homeScreen";
@@ -32,13 +30,20 @@ class _HomeScreenState extends State<HomeScreen> {
   int seconds = 0;
   int minutes = 0;
   late Timer timer;
+
   @override
   void initState() {
-    timer = Timer(
-      Duration(seconds: 1),
-      () {},
-    );
     super.initState();
+    // Fixed: Start a repeating timer
+    timer = Timer.periodic(Duration(seconds: 1), (Timer t) {
+      setState(() {
+        seconds++;
+        if (seconds == 60) {
+          seconds = 0;
+          minutes++;
+        }
+      });
+    });
   }
 
   @override
@@ -49,154 +54,147 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    // Cancel the timer when leaving the screen
+    timer.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BackgroundWidget(
         child: Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width * 0.90,
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(44)),
-                    child: StatefulBuilder(
-                      builder: (context, setStateText) {
-                        timer = Timer(
-                          Duration(seconds: 1),
-                          () {
-                            seconds++;
-                            if (seconds == 59) {
-                              seconds = 0;
-                              minutes++;
-                            }
-                            setStateText(() {});
-                          },
-                        );
-                        return Text(
-                          "$minutes:$seconds",
-                          style: TextStyle(
+          backgroundColor: Colors.transparent,
+          body: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width * 0.90,
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(44)),
+                      child: Text(
+                        "$minutes:${seconds.toString().padLeft(2, '0')}",
+                        style: TextStyle(
+                            color: AppColors.black,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 32),
+                      ),
+                    ),
+                  ),
+                ),
+                Spacer(),
+                Text(
+                  "Player ${playerX ? "X" : "O"}'s Turn",
+                  style: TextStyle(
+                      color: AppColors.white,
+                      fontSize: 36,
+                      fontWeight: FontWeight.w700),
+                ),
+                Spacer(),
+                Container(
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width * 0.92,
+                  height: MediaQuery.of(context).size.height * 0.75,
+                  decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(44)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: TabWidget(
+                                  onTap: onTap,
+                                  title: board[0],
+                                  index: 0,
+                                )),
+                            VerticalDivider(
                               color: AppColors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 32),
-                        );
-                      },
-                    )),
-              ),
+                              width: 2,
+                            ),
+                            Expanded(
+                                child: TabWidget(
+                                    onTap: onTap, title: board[1], index: 1)),
+                            VerticalDivider(
+                              color: AppColors.black,
+                              width: 2,
+                            ),
+                            Expanded(
+                                child: TabWidget(
+                                    onTap: onTap, title: board[2], index: 2)),
+                          ],
+                        ),
+                      ),
+                      Divider(
+                        color: AppColors.black,
+                        height: 0,
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: TabWidget(
+                                    onTap: onTap, title: board[3], index: 3)),
+                            VerticalDivider(
+                              color: AppColors.black,
+                              width: 2,
+                            ),
+                            Expanded(
+                                child: TabWidget(
+                                    onTap: onTap, title: board[4], index: 4)),
+                            VerticalDivider(
+                              color: AppColors.black,
+                              width: 2,
+                            ),
+                            Expanded(
+                                child: TabWidget(
+                                    onTap: onTap, title: board[5], index: 5)),
+                          ],
+                        ),
+                      ),
+                      Divider(
+                        color: AppColors.black,
+                        height: 0,
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: TabWidget(
+                                    onTap: onTap, title: board[6], index: 6)),
+                            VerticalDivider(
+                              color: AppColors.black,
+                              width: 2,
+                            ),
+                            Expanded(
+                                child: TabWidget(
+                                    onTap: onTap, title: board[7], index: 7)),
+                            VerticalDivider(
+                              color: AppColors.black,
+                              width: 2,
+                            ),
+                            Expanded(
+                                child: TabWidget(
+                                    onTap: onTap, title: board[8], index: 8)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
-            Spacer(),
-            Text(
-              "Player ${playerX ? "X" : "O"}'s Turn",
-              style: TextStyle(
-                  color: AppColors.white,
-                  fontSize: 36,
-                  fontWeight: FontWeight.w700),
-            ),
-            Spacer(),
-            Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width * 0.92,
-              height: MediaQuery.of(context).size.height * 0.75,
-              decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(44)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: TabWidget(
-                          onTap: onTap,
-                          title: board[0],
-                          index: 0,
-                        )),
-                        VerticalDivider(
-                          color: AppColors.black,
-                          width: 2,
-                        ),
-                        Expanded(
-                            child: TabWidget(
-                                onTap: onTap, title: board[1], index: 1)),
-                        VerticalDivider(
-                          color: AppColors.black,
-                          width: 2,
-                        ),
-                        Expanded(
-                            child: TabWidget(
-                                onTap: onTap, title: board[2], index: 2)),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    color: AppColors.black,
-                    height: 0,
-                  ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: TabWidget(
-                                onTap: onTap, title: board[3], index: 3)),
-                        VerticalDivider(
-                          color: AppColors.black,
-                          width: 2,
-                        ),
-                        Expanded(
-                            child: TabWidget(
-                                onTap: onTap, title: board[4], index: 4)),
-                        VerticalDivider(
-                          color: AppColors.black,
-                          width: 2,
-                        ),
-                        Expanded(
-                            child: TabWidget(
-                                onTap: onTap, title: board[5], index: 5)),
-                      ],
-                    ),
-                  ),
-                  Divider(
-                    color: AppColors.black,
-                    height: 0,
-                  ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: TabWidget(
-                                onTap: onTap, title: board[6], index: 6)),
-                        VerticalDivider(
-                          color: AppColors.black,
-                          width: 2,
-                        ),
-                        Expanded(
-                            child: TabWidget(
-                                onTap: onTap, title: board[7], index: 7)),
-                        VerticalDivider(
-                          color: AppColors.black,
-                          width: 2,
-                        ),
-                        Expanded(
-                            child: TabWidget(
-                                onTap: onTap, title: board[8], index: 8)),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 
   void onTap(String title, int index) {
@@ -315,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ));
       },
     ).then(
-      (value) {
+          (value) {
         resetGame();
       },
     );
